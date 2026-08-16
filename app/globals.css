@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-cairo: 'Cairo', Arial, sans-serif;
+  --font-tajawal: 'Cairo', Arial, sans-serif;
+}
+
+body {
+  font-family: var(--font-cairo);
+  font-size: 16px;
+  line-height: 1.75;
+  color: #111114;
+}
+.dark body{background:#121216;color:#f5f5f6}.dark nav,.dark .surface{background:#19191f!important;color:#f5f5f6!important}.dark .dark-card{background:#1d1d23!important;border-color:#34343d!important}.dark .text-muted,.dark .text-gray-400{color:#aaaab4!important}
+.dark input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),.dark textarea,.dark select{background:#24242b!important;color:#f7f7f8!important;border-color:#454550!important}.dark input::placeholder,.dark textarea::placeholder{color:#aaaab5!important}.dark option{background:#24242b;color:#fff}.dark .bg-grey,.dark .bg-\[\#f1f1f3\],.dark .bg-\[\#eeeeF0\]{background:#303039!important;color:#fff!important}.dark .bg-white{background:#1d1d23!important;color:#fff!important}.dark .border,.dark .border-line,.dark .border-b,.dark .border-t{border-color:#393943!important}.dark button:disabled{color:#888!important}.dark input[type="range"]{accent-color:#7b2a8e}
+a[href^="https://wa.me/"]{background:#25D366!important;color:#fff!important;min-width:110px;text-align:center;border:2px solid #fff;box-shadow:0 8px 25px rgba(0,0,0,.28);z-index:60!important}
+main > section:first-child > div:last-child{background-image:url('/dar-shaan-hero.png')!important;background-size:cover!important;background-position:center!important;min-height:360px}
+main > section:first-child > div:last-child > div{display:none}
+.social-icon[href^="https://wa.me/"]{min-width:44px!important;border-width:1px!important;box-shadow:none!important}
+.instagram-gradient{background:radial-gradient(circle at 30% 105%,#fdf497 0 12%,#fd5949 42%,#d6249f 62%,#285AEB 100%)}
+footer h4 + p{font-size:0!important;direction:rtl!important}
+footer h4 + p::after{content:"من الساعة 10 صباحًا حتى الساعة 7 مساءً";font-size:.875rem!important;direction:rtl;display:block}
+select[name="stars"]{
+  appearance:none;
+  -webkit-appearance:none;
+  min-height:72px;
+  border:2px solid #ead8a7!important;
+  border-radius:14px!important;
+  background:linear-gradient(145deg,#fffdf7,#fff7df)!important;
+  color:#d69218!important;
+  font-size:19px!important;
+  font-weight:800!important;
+  text-align:center;
+  text-align-last:center;
+  cursor:pointer;
+  box-shadow:0 5px 18px rgba(201,138,46,.12);
+}
+select[name="stars"]:hover{border-color:#c98a2e!important;transform:translateY(-1px)}
+select[name="stars"]:focus{outline:3px solid rgba(201,138,46,.18)!important;outline-offset:2px}
+.dark select[name="stars"]{background:linear-gradient(145deg,#2c271d,#242018)!important;color:#ffc14d!important;border-color:#6e5524!important}
+a.footer-whatsapp[href^="https://wa.me/"]{background:transparent!important;color:inherit!important;min-width:0!important;text-align:right!important;border:0!important;box-shadow:none!important;padding:0!important}
+button,a,input,select,textarea{font-family:inherit}button,a{transition:all .2s ease}button:focus-visible,a:focus-visible,input:focus,select:focus,textarea:focus{outline:2px solid #5B1D6B;outline-offset:2px}input,select,textarea{font-size:14px}h1,h2,h3,h4{letter-spacing:-.02em}table th{font-weight:800}table td{vertical-align:middle}
+
+/* غلاف الكتاب الموحّد — مونوغرام + نقشة معينات بهوية دار شأن */
+.book-cover {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(155deg, #5B1D6B 0%, #3E1249 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.book-cover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(135deg, rgba(255,255,255,.04) 0 2px, transparent 2px 14px);
+}
+.book-cover.has-image::before { display: none; }
+.book-cover .monogram {
+  position: relative;
+  z-index: 1;
+  color: rgba(255,255,255,.92);
+  font-weight: 800;
+}
+.book-cover .diamonds {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  display: flex;
+  gap: 4px;
+  z-index: 1;
+}
+.book-cover .diamonds span {
+  width: 7px;
+  height: 7px;
+  background: rgba(255,255,255,.5);
+  transform: rotate(45deg);
+  display: block;
+}
