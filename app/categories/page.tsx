@@ -1,2 +1,41 @@
-"use client";import{useMemo,useState}from"react";import{useSearchParams}from"next/navigation";import SiteNav from"@/components/SiteNav";import SiteFooter from"@/components/SiteFooter";import BookCard from"@/components/BookCard";import{useStore}from"@/lib/store-context";
-export default function Categories(){const{books}=useStore(),sp=useSearchParams(),[q,setQ]=useState(sp.get("q")||""),[selected,setSelected]=useState<string[]>([]),[sort,setSort]=useState("new"),[max,setMax]=useState(50),[available,setAvailable]=useState(false),cats=[...new Set(books.map(b=>b.category))];const shown=useMemo(()=>{let x=books.filter(b=>(!q||`${b.title} ${b.author} ${b.category}`.toLowerCase().includes(q.toLowerCase()))&&(!selected.length||selected.includes(b.category))&&b.price<=max&&(!available||b.stock>0));if(sort==="asc")x=[...x].sort((a,b)=>a.price-b.price);if(sort==="desc")x=[...x].sort((a,b)=>b.price-a.price);if(sort==="name")x=[...x].sort((a,b)=>a.title.localeCompare(b.title,"ar"));return x},[books,q,selected,sort,max,available]);return <><SiteNav/><main className="max-w-6xl mx-auto px-5 md:px-12 py-10"><div className="mb-7"><h1 className="text-3xl font-extrabold mb-4">الكتب</h1><input value={q} onChange={e=>setQ(e.target.value)} placeholder="ابحثي باسم الكتاب أو المؤلف…" className="w-full border rounded-lg px-5 py-3"/></div><div className="grid md:grid-cols-[220px_1fr] gap-9"><aside className="space-y-5"><div><b>التصنيف</b>{cats.map(c=><label key={c} className="block mt-2"><input type="checkbox" className="ml-2" checked={selected.includes(c)} onChange={()=>setSelected(x=>x.includes(c)?x.filter(v=>v!==c):[...x,c])}/>{c}</label>)}</div><label className="block"><b>السعر حتى {max} د.أ</b><input className="w-full" type="range" min="5" max="50" value={max} onChange={e=>setMax(+e.target.value)}/></label><label><input type="checkbox" className="ml-2" checked={available} onChange={e=>setAvailable(e.target.checked)}/>المتوفر فقط</label></aside><section><div className="flex justify-between mb-5"><span>{shown.length} نتيجة</span><select value={sort} onChange={e=>setSort(e.target.value)} className="border rounded p-2"><option value="new">الأحدث</option><option value="asc">الأقل سعرًا</option><option value="desc">الأعلى سعرًا</option><option value="name">الاسم</option></select></div>{shown.length?<div className="grid grid-cols-2 lg:grid-cols-3 gap-5">{shown.map(b=><BookCard key={b.id} book={b}/>)}</div>:<div className="border rounded-xl p-16 text-center text-gray-400">لا توجد كتب مطابقة. جرّبي تغيير البحث أو الفلاتر.</div>}</section></div></main><SiteFooter/></>}
+"use client";
+
+import { useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import SiteNav from "@/components/SiteNav";
+import SiteFooter from "@/components/SiteFooter";
+import BookCard from "@/components/BookCard";
+import { useStore } from "@/lib/store-context";
+
+export default function Categories() {
+  const { books } = useStore();
+  const sp = useSearchParams();
+  const [q, setQ] = useState(sp.get("q") || "");
+  const [selected, setSelected] = useState<string[]>([]);
+  const [sort, setSort] = useState("new");
+  const [max, setMax] = useState(50);
+  const [available, setAvailable] = useState(false);
+  const cats = [...new Set(books.map((book) => book.category))];
+  const shown = useMemo(() => {
+    let result = books.filter((book) => (!q || `${book.title} ${book.author} ${book.category}`.toLowerCase().includes(q.toLowerCase())) && (!selected.length || selected.includes(book.category)) && book.price <= max && (!available || book.stock > 0));
+    if (sort === "asc") result = [...result].sort((a, b) => a.price - b.price);
+    if (sort === "desc") result = [...result].sort((a, b) => b.price - a.price);
+    if (sort === "name") result = [...result].sort((a, b) => a.title.localeCompare(b.title, "ar"));
+    return result;
+  }, [books, q, selected, sort, max, available]);
+
+  return <><SiteNav/><main className="catalog-page page-shell">
+    <header className="page-heading"><span>مكتبة دار شأن</span><h1>جميع الكتب</h1><p>اكتشف عناوين مختارة بعناية، وابحث حسب التصنيف أو المؤلف.</p></header>
+    <div className="catalog-search"><span aria-hidden="true">⌕</span><input value={q} onChange={(event) => setQ(event.target.value)} placeholder="ابحث باسم الكتاب أو المؤلف…" /></div>
+    <div className="catalog-layout">
+      <aside className="filter-card">
+        <div className="filter-title"><b>التصنيفات</b><button onClick={() => setSelected([])}>مسح</button></div>
+        {cats.map((category) => <label key={category}><input type="checkbox" checked={selected.includes(category)} onChange={() => setSelected((current) => current.includes(category) ? current.filter((value) => value !== category) : [...current, category])}/><span>{category}</span></label>)}
+        <div className="filter-divider"/>
+        <label className="price-filter"><b>السعر حتى {max} د.أ</b><input type="range" min="5" max="50" value={max} onChange={(event) => setMax(+event.target.value)}/></label>
+        <label><input type="checkbox" checked={available} onChange={(event) => setAvailable(event.target.checked)}/><span>المتوفر فقط</span></label>
+      </aside>
+      <section className="catalog-results"><div className="catalog-toolbar"><span><b>{shown.length}</b> كتاب</span><select value={sort} onChange={(event) => setSort(event.target.value)}><option value="new">الأحدث</option><option value="asc">الأقل سعرًا</option><option value="desc">الأعلى سعرًا</option><option value="name">حسب الاسم</option></select></div>{shown.length ? <div className="book-grid books-grid-catalog">{shown.map((book) => <BookCard key={book.id} book={book}/>)}</div> : <div className="empty-state">لا توجد كتب مطابقة. جرّب تغيير البحث أو الفلاتر.</div>}</section>
+    </div>
+  </main><SiteFooter/></>;
+}
